@@ -12,8 +12,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
 
-    data = ModalRoute.of(context)?.settings.arguments as Map<dynamic, dynamic>;
-    print(data);
+    data = data.isNotEmpty ? data : ModalRoute.of(context)?.settings.arguments as Map<dynamic, dynamic>;
 
     // Set background
     String bgImage = data['isDaytime'] ? "day.png" : "night.png";
@@ -36,8 +35,18 @@ class _HomeState extends State<Home> {
             child: Column(
               children: [
                 TextButton.icon(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/location');
+                  onPressed: () async {
+                    dynamic result = await Navigator.pushNamed(context, '/location');
+                    if(result != null){
+                      setState(() {
+                        data = {
+                          'location': result['location'],
+                          'time': result['time'],
+                          'isDaytime': data['isDaytime'],
+                          'flag': result['flag']
+                        };
+                      });
+                    }
                   },
                   icon: Icon(
                     Icons.edit_location,
@@ -54,9 +63,13 @@ class _HomeState extends State<Home> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    CircleAvatar(
+                      backgroundImage: AssetImage('assets/${data['flag']}'),
+                    ),
+                    const SizedBox(width: 10.0,),
                     Text(
                       data['location'],
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 28.0,
                         letterSpacing: 2.0,
                         color: Colors.white,
@@ -67,7 +80,7 @@ class _HomeState extends State<Home> {
                 const SizedBox(height: 20.0,),
                 Text(
                   data['time'],
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 66.0,
                       color: Colors.white,
                   ),

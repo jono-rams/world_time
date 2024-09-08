@@ -10,8 +10,8 @@ class Loading extends StatefulWidget {
 
 class _LoadingState extends State<Loading> {
 
-  void timeSet(WorldTime instance) {
-    Timer(const Duration(seconds: 2), () {
+  void onTimeSet(WorldTime instance) {
+    Timer(const Duration(seconds: 1), () {
       Navigator.pushReplacementNamed(context, '/home', arguments: {
         'location' : instance.location,
         'flag' : instance.flag,
@@ -21,7 +21,7 @@ class _LoadingState extends State<Loading> {
     });
   }
 
-  void setupWorldTime (Function onTimeSet) async {
+  void setupWorldTime () async {
     WorldTime instance = WorldTime(location: 'Berlin', flag: 'germany.png', url: 'Europe/Berlin');
     await instance.getTime();
     onTimeSet(instance);
@@ -30,15 +30,15 @@ class _LoadingState extends State<Loading> {
   @override
   void initState() {
     super.initState();
-    setupWorldTime(timeSet);
+    setupWorldTime();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.purple[900],
-      body: Center(
-        child: const SpinKitThreeBounce(
+      body: const Center(
+        child: SpinKitThreeBounce(
           color: Colors.white,
           size: 50.0,
         ),
