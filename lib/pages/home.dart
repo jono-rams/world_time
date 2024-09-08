@@ -13,19 +13,43 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
 
     data = ModalRoute.of(context)?.settings.arguments as Map<dynamic, dynamic>;
+    print(data);
 
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            TextButton.icon(
-              onPressed: () {
-                Navigator.pushNamed(context, '/location');
-              },
-              icon: Icon(Icons.edit_location),
-              label: Text('Edit location'),
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(0.0, 120.0, 0.0, 0.0),
+          child: Column(
+            children: [
+              TextButton.icon(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/location');
+                },
+                icon: Icon(Icons.edit_location),
+                label: Text('Edit location'),
+              ),
+              const SizedBox(height: 20.0,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    data['location'],
+                    style: TextStyle(
+                      fontSize: 28.0,
+                      letterSpacing: 2.0,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20.0,),
+              Text(
+                data['time'],
+                style: TextStyle(
+                  fontSize: 66.0,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
